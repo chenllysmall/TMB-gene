@@ -51,11 +51,11 @@ if(LogC){
     geo=log2(geo+1)}
 geo=normalizeBetweenArrays(geo)
 
-eGene=intersect(row.names(tcga),row.names(geo))
+sameGene=intersect(row.names(tcga),row.names(geo))
 tcgaOut=tcga[sameGene,]
 geoOut=geo[sameGene,]
 
-#???=cbind(tcgaOut,geoOut)
+all=cbind(tcgaOut,geoOut)
 batchType=c(rep(1,ncol(tcgaOut)),rep(2,ncol(geoOut)))
 outTab=ComBat(all, batchType, par.prior=TRUE)
 tcgaOut=outTab[,colnames(tcgaOut)]
@@ -63,20 +63,19 @@ tcgaOut[tcgaOut<0]=0
 geoOut=outTab[,colnames(geoOut)]
 geoOut[geoOut<0]=0
 
-#???aTab=rbind(ID=colnames(tcgaOut), tcgaOut)
+tcgaTab=rbind(ID=colnames(tcgaOut), tcgaOut)
 write.table(tcgaTab, file="TCGA.normalize.txt", sep="\t", quote=F, col.names=F)
 geoTab=rbind(ID=colnames(geoOut), geoOut)
 write.table(geoTab,file="GEO.normalize.txt",sep="\t",quote=F,col.names=F)
 
-#??Èad.table(geneFile, header=T, sep="\t", check.names=F)
+gene=read.table(geneFile, header=T, sep="\t", check.names=F)
 sameGene=intersect(as.vector(gene[,1]), rownames(tcgaOut))
 tcgaShareExp=tcgaOut[sameGene,]
 geoShareExp=geoOut[sameGene,]
 
-#????Ä£?p=rbind(ID=colnames(tcgaShareExp),tcgaShareExp)
+tcgaShareExp=rbind(ID=colnames(tcgaShareExp),tcgaShareExp)
 write.table(tcgaShareExp,file="TCGA.share.txt",sep="\t",quote=F,col.names=F)
 geoShareExp=rbind(ID=colnames(geoShareExp),geoShareExp)
 write.table(geoShareExp,file="GEO.share.txt",sep="\t",quote=F,col.names=F)
 
 
-######Video 
