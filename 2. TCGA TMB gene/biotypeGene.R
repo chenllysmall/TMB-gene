@@ -20,11 +20,11 @@ data=matrix(as.numeric(as.matrix(exp)),nrow=nrow(exp),dimnames=dimnames)
 data=avereps(data)
 data=data[rowMeans(data)>0,]
 
-e=read.table(geneFile, header=F, check.names=F, sep="\t")
+gene=read.table(geneFile, header=F, check.names=F, sep="\t")
 sameGene=intersect(as.vector(gene[,1]), rownames(data))
 geneExp=data[sameGene,]
 
-#???=rbind(ID=colnames(geneExp),geneExp)
+out=rbind(ID=colnames(geneExp),geneExp)
 write.table(out,file="TCGAExp.txt",sep="\t",quote=F,col.names=F)
 
 
